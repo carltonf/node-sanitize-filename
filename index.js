@@ -42,6 +42,18 @@ function truncate(str, maxByteSize) {
   for(var i = 0; i < strLen; i++){
     codePoint = str.charCodeAt(i);
 
+    // handle 4-byte non-BMP chars
+    // low surrogate
+    if (codePoint >= 0xdc00 && codePoint <= 0xdfff){
+      // when parsing previous hi-surrogate, 3 is added to curByteSize
+      curByteSize++;
+      if(curByteSize > maxByteSize){
+        return str.substring(0, i - 1);
+      }
+
+      continue;
+    }
+
     if( codePoint <= 0x7f ) {
       curByteSize++;
     }
@@ -50,15 +62,6 @@ function truncate(str, maxByteSize) {
     }
     else if( codePoint >= 0x800 && codePoint <= 0xffff ) {
       curByteSize += 3;
-    }
-
-    // handle 4-byte non-BMP chars
-    // low surrogate
-    if (codePoint >= 0xdc00 && codePoint <= 0xdfff){
-      // when parsing previous hi-surrogate, 3 is added to curByteSize
-      curByteSize++;
-      if(curByteSize > maxByteSize)
-        return str.substring(0, i - 1);
     }
 
     if (curByteSize > maxByteSize){
