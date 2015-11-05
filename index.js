@@ -16,7 +16,7 @@
  *
  * Reserved filenames on Unix-based systems (".", "..")
  * Reserved filenames in Windows ("CON", "PRN", "AUX", "NUL", "COM1",
- * "COM2", "COM3", "COM4", "COM5", "COM6", "COM7", "COM8", "COM9", 
+ * "COM2", "COM3", "COM4", "COM5", "COM6", "COM7", "COM8", "COM9",
  * "LPT1", "LPT2", "LPT3", "LPT4", "LPT5", "LPT6", "LPT7", "LPT8", and
  * "LPT9") case-insesitively and with or without filename extensions.
  *
@@ -38,7 +38,7 @@ function truncate(str, maxByteSize) {
   var strLen = str.length,
       curByteSize = 0,
       codePoint = -1;
-  
+
   for(var i = 0; i < strLen; i++){
     codePoint = str.charCodeAt(i);
 
@@ -79,7 +79,7 @@ function sanitize(input, replacement) {
     .replace(controlRe, replacement)
     .replace(reservedRe, replacement)
     .replace(windowsReservedRe, replacement);
-  return truncate(sanitized.substr(0, 255), 255);
+  return truncate(sanitized, 255);
 }
 
 module.exports = function (input, options) {
